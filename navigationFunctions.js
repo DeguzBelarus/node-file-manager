@@ -19,6 +19,7 @@ export const goToUpperDirectory = async (currentPath) => {
     if (currentPathModified.length < 3) {
       if (!currentPathModified[1]) {
         currentPathModified = currentPathModified.join('\\');
+        console.log('You are currently at the root of the disk');
         return currentPathModified;
       } else {
         currentPathModified.length = currentPathModified.length - 1;
@@ -63,10 +64,11 @@ export const getFilesList = async (currentPath) => {
         withFileTypes: true
       });
 
-      const filesDataSortingMethod = (prevFileData, nextFileData) => {
-        if (prevFileData.name > nextFileData.name) return 1;
-        if (prevFileData.name < nextFileData.name) return -1;
-      };
+      const filesDataSortingMethod = (prevFileData, nextFileData) =>
+        prevFileData.name > nextFileData.name ? -1 : 1;
+      const directoriesFiltrationMethod = (fileData) => fileData.Type === 'directory';
+      const filesFiltrationMethod = (fileData) => fileData.Type === 'file';
+
 
       filesData = filesData.map((fileData) => {
         return {
@@ -74,9 +76,9 @@ export const getFilesList = async (currentPath) => {
           Type: fileData.isFile() ? 'file' : 'directory'
         }
       });
-      filesData = [...filesData.filter((fileData) => fileData.Type === 'directory')
+      filesData = [...filesData.filter(directoriesFiltrationMethod)
         .sort(filesDataSortingMethod),
-        ...filesData.filter((fileData) => fileData.Type === 'file')
+        ...filesData.filter(filesFiltrationMethod)
         .sort(filesDataSortingMethod)
       ];
 
