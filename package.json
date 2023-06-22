@@ -1,0 +1,20 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "node file manager",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DeguzBelarus/node-file-manager.git"
+  },
+  "author": "DeguzBelarus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DeguzBelarus/node-file-manager/issues"
+  },
+  "homepage": "https://github.com/DeguzBelarus/node-file-manager#readme"
+}
