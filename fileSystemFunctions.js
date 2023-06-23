@@ -1,7 +1,8 @@
 import {
   ReadStream,
   writeFile,
-  rename
+  rename,
+  WriteStream
 } from 'fs';
 import {
   stat
@@ -110,6 +111,51 @@ export const renameFile = async (pathToFile, newFileName, currentPath) => {
       });
 
       await renameFilePromise;
+    } catch (error) {
+      console.error('Operation failed');
+    }
+  }
+};
+
+export const copyFile = async (pathToFile, newPath, currentPath) => {
+  if (!pathToFile || !newPath || !currentPath) {
+    console.error('Operation failed');
+  } else {
+    try {
+      if (!IS_RELATIVE_PATH(pathToFile)) {
+        pathToFile = currentPath.split('\\')[1] ?
+          `${currentPath}\\${pathToFile}` :
+          `${currentPath}${pathToFile}`;
+      }
+      if (!IS_RELATIVE_PATH(newPath)) {
+        newPath = currentPath.split('\\')[1] ?
+          `${currentPath}\\${newPath}` :
+          `${currentPath}${newPath}`;
+      }
+
+      await stat(pathToFile);
+      await stat(newPath);
+      const copyFilePromise = new Promise((resolve, reject) => {
+        const fileName = pathToFile.split('\\')[pathToFile.split('\\').length - 1];
+
+        const readableStream = new ReadStream(pathToFile);
+        const writeableStream = new WriteStream(`${newPath}\\${fileName}`);
+        readableStream.pipe(writeableStream);
+
+        writeableStream.on('finish', (_) => {
+          console.log(`The file ${fileName} was successfully copied to ${newPath}`);
+          readableStream.destroy();
+          writeableStream.destroy();
+          resolve();
+        })
+        writeableStream.on('error', (_) => {
+          readableStream.destroy();
+          writeableStream.destroy();
+          reject();
+        })
+      });
+
+      await copyFilePromise;
     } catch (error) {
       console.error('Operation failed');
     }
