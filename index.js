@@ -13,7 +13,8 @@ import {
 } from './navigationFunctions.js';
 import {
   readFileContent,
-  createFile
+  createFile,
+  renameFile
 } from './fileSystemFunctions.js';
 import {
   CD_COMMAND,
@@ -23,7 +24,9 @@ import {
   LS_COMMAND,
   CAT_COMMAND,
   ADD_COMMAND,
-  FIRST_COMMAND_PARAM
+  FIRST_COMMAND_PARAM,
+  SECOND_COMMAND_PARAM,
+  RN_COMMAND
 } from './constants.js';
 
 console.log(`Welcome to the File Manager, ${process.argv.slice(2)[0].split('=')[1]}!`);
@@ -58,6 +61,9 @@ async function openReadLine() {
       break;
     case `${ADD_COMMAND} ${FIRST_COMMAND_PARAM(command)}`:
       await createFile(FIRST_COMMAND_PARAM(command), currentPath);
+      break;
+    case `${RN_COMMAND} ${FIRST_COMMAND_PARAM(command)} ${SECOND_COMMAND_PARAM(command)}`:
+      await renameFile(FIRST_COMMAND_PARAM(command), SECOND_COMMAND_PARAM(command), currentPath);
       break;
     default:
       console.log('Invalid input');

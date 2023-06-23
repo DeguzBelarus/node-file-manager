@@ -12,3 +12,6 @@ export const READLINE_CONFIG = {
 };
 
 export const FIRST_COMMAND_PARAM = (string) => string.split(' ')[1];
+export const SECOND_COMMAND_PARAM = (string) => string.split(' ')[2];
+
+export const IS_RELATIVE_PATH = (path) => path.split('\\')[0].includes(':') ? true : false;

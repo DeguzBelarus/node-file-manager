@@ -2,10 +2,13 @@ import {
   stat,
   readdir
 } from 'fs/promises';
-
 import {
   join
 } from 'path';
+
+import {
+  IS_RELATIVE_PATH
+} from "./constants.js";
 
 export const showCurrentPath = (currentPath) => {
   console.log(`You are currently in ${currentPath}`);
@@ -39,7 +42,7 @@ export const changeDirectory = async (newPath, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      if (!newPath.split('\\')[0].includes(':')) {
+      if (!IS_RELATIVE_PATH(newPath)) {
         newPath = join(currentPath, newPath);
       } else {
         if (newPath.split('\\').length === 1) {

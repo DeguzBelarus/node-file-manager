@@ -1,17 +1,22 @@
 import {
   ReadStream,
-  writeFile
+  writeFile,
+  rename
 } from 'fs';
 import {
   stat
 } from 'fs/promises';
+
+import {
+  IS_RELATIVE_PATH
+} from "./constants.js";
 
 export const readFileContent = async (pathToFile, currentPath) => {
   if (!pathToFile || !currentPath) {
     console.error('Operation failed');
   } else {
     try {
-      if (!pathToFile.split('\\')[0].includes(':')) {
+      if (!IS_RELATIVE_PATH(pathToFile)) {
         pathToFile = currentPath.split('\\')[1] ?
           `${currentPath}\\${pathToFile}` :
           `${currentPath}${pathToFile}`;
@@ -51,7 +56,7 @@ export const createFile = async (pathToFile, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      if (!pathToFile.split('\\')[0].includes(':')) {
+      if (!IS_RELATIVE_PATH(pathToFile)) {
         pathToFile = currentPath.split('\\')[1] ?
           `${currentPath}\\${pathToFile}` :
           `${currentPath}${pathToFile}`;
@@ -69,6 +74,42 @@ export const createFile = async (pathToFile, currentPath) => {
       });
 
       await createFilePromise;
+    } catch (error) {
+      console.error('Operation failed');
+    }
+  }
+};
+
+export const renameFile = async (pathToFile, newFileName, currentPath) => {
+  if (!pathToFile || !newFileName || !currentPath) {
+    console.error('Operation failed');
+  } else {
+    try {
+      if (!IS_RELATIVE_PATH(pathToFile)) {
+        pathToFile = currentPath.split('\\')[1] ?
+          `${currentPath}\\${pathToFile}` :
+          `${currentPath}${pathToFile}`;
+      }
+
+      await stat(pathToFile);
+      const newFilePath = pathToFile
+        .split('\\')
+        .map((pathElement, index) =>
+          index + 1 === pathToFile.split('\\').length ? newFileName : pathElement)
+        .join('\\');
+
+      const renameFilePromise = new Promise((resolve, reject) => {
+        rename(pathToFile, newFilePath, (error) => {
+          if (error) {
+            console.error(error);
+            reject();
+          }
+          console.log(`The file ${pathToFile.split('\\')[pathToFile.split('\\').length - 1]} was successfully renamed to ${newFileName}`);
+          resolve();
+        });
+      });
+
+      await renameFilePromise;
     } catch (error) {
       console.error('Operation failed');
     }
