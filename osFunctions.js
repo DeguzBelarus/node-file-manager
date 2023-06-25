@@ -1,10 +1,12 @@
 import {
   EOL,
-  cpus
+  cpus,
+  homedir
 } from 'os';
 import {
   EOL_PARAM,
-  CPUS_PARAM
+  CPUS_PARAM,
+  HOMEDIR_PARAM
 } from "./constants.js";
 
 export const osInfo = (param) => {
@@ -16,6 +18,9 @@ export const osInfo = (param) => {
       console.log('CPU cores info: ');
       console.log('Total cores: ', cpus().length);
       console.log('CPU cores info: ', cpus());
+      break;
+    case `--${HOMEDIR_PARAM}`:
+      console.log(`Home directory: ${homedir()}`);
       break;
     default:
       console.log('Invalid input');
