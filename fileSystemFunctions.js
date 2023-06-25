@@ -208,3 +208,29 @@ export const moveFile = async (pathToFile, newPath, currentPath) => {
     }
   }
 };
+
+export const removeFile = async (pathToFile, currentPath) => {
+  if (!pathToFile || !currentPath) {
+    console.error('Operation failed');
+  } else {
+    try {
+      if (!IS_RELATIVE_PATH(pathToFile)) {
+        pathToFile = currentPath.split('\\')[1] ?
+          `${currentPath}\\${pathToFile}` :
+          `${currentPath}${pathToFile}`;
+      }
+
+      await stat(pathToFile);
+      const removeFilePromise = new Promise((resolve, _) => {
+        const fileName = pathToFile.split('\\')[pathToFile.split('\\').length - 1];
+        rm(pathToFile, () => {});
+        console.log(`The file ${fileName} was successfully removed`);
+        resolve();
+      });
+
+      await removeFilePromise;
+    } catch (error) {
+      console.error('Operation failed');
+    }
+  }
+};

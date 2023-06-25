@@ -16,7 +16,8 @@ import {
   createFile,
   renameFile,
   copyFile,
-  moveFile
+  moveFile,
+  removeFile
 } from './fileSystemFunctions.js';
 import {
   CD_COMMAND,
@@ -75,6 +76,9 @@ async function openReadLine() {
       break;
     case `${MV_COMMAND} ${FIRST_COMMAND_PARAM(command)} ${SECOND_COMMAND_PARAM(command)}`:
       await moveFile(FIRST_COMMAND_PARAM(command), SECOND_COMMAND_PARAM(command), currentPath);
+      break;
+    case `${RM_COMMAND} ${FIRST_COMMAND_PARAM(command)}`:
+      await removeFile(FIRST_COMMAND_PARAM(command), currentPath);
       break;
     default:
       console.log('Invalid input');
