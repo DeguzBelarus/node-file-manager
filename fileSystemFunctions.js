@@ -10,7 +10,7 @@ import {
 } from 'fs/promises';
 
 import {
-  IS_RELATIVE_PATH
+  RELATIVE_PATH_NORMALIZATION
 } from "./constants.js";
 
 export const readFileContent = async (pathToFile, currentPath) => {
@@ -18,11 +18,7 @@ export const readFileContent = async (pathToFile, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      if (!IS_RELATIVE_PATH(pathToFile)) {
-        pathToFile = currentPath.split('\\')[1] ?
-          `${currentPath}\\${pathToFile}` :
-          `${currentPath}${pathToFile}`;
-      }
+      pathToFile = RELATIVE_PATH_NORMALIZATION(pathToFile, currentPath);
 
       await stat(pathToFile);
       const readableStream = new ReadStream(pathToFile);
@@ -58,11 +54,7 @@ export const createFile = async (pathToFile, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      if (!IS_RELATIVE_PATH(pathToFile)) {
-        pathToFile = currentPath.split('\\')[1] ?
-          `${currentPath}\\${pathToFile}` :
-          `${currentPath}${pathToFile}`;
-      }
+      pathToFile = RELATIVE_PATH_NORMALIZATION(pathToFile, currentPath);
 
       const createFilePromise = new Promise((resolve, reject) => {
         writeFile(pathToFile, '', (error) => {
@@ -87,11 +79,7 @@ export const renameFile = async (pathToFile, newFileName, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      if (!IS_RELATIVE_PATH(pathToFile)) {
-        pathToFile = currentPath.split('\\')[1] ?
-          `${currentPath}\\${pathToFile}` :
-          `${currentPath}${pathToFile}`;
-      }
+      pathToFile = RELATIVE_PATH_NORMALIZATION(pathToFile, currentPath);
 
       await stat(pathToFile);
       const newFilePath = pathToFile
@@ -123,16 +111,8 @@ export const copyFile = async (pathToFile, newPath, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      if (!IS_RELATIVE_PATH(pathToFile)) {
-        pathToFile = currentPath.split('\\')[1] ?
-          `${currentPath}\\${pathToFile}` :
-          `${currentPath}${pathToFile}`;
-      }
-      if (!IS_RELATIVE_PATH(newPath)) {
-        newPath = currentPath.split('\\')[1] ?
-          `${currentPath}\\${newPath}` :
-          `${currentPath}${newPath}`;
-      }
+      pathToFile = RELATIVE_PATH_NORMALIZATION(pathToFile, currentPath);
+      newPath = RELATIVE_PATH_NORMALIZATION(newPath, currentPath);
 
       await stat(pathToFile);
       await stat(newPath);
@@ -168,16 +148,8 @@ export const moveFile = async (pathToFile, newPath, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      if (!IS_RELATIVE_PATH(pathToFile)) {
-        pathToFile = currentPath.split('\\')[1] ?
-          `${currentPath}\\${pathToFile}` :
-          `${currentPath}${pathToFile}`;
-      }
-      if (!IS_RELATIVE_PATH(newPath)) {
-        newPath = currentPath.split('\\')[1] ?
-          `${currentPath}\\${newPath}` :
-          `${currentPath}${newPath}`;
-      }
+      pathToFile = RELATIVE_PATH_NORMALIZATION(pathToFile, currentPath);
+      newPath = RELATIVE_PATH_NORMALIZATION(newPath, currentPath);
 
       await stat(pathToFile);
       await stat(newPath);
@@ -214,11 +186,7 @@ export const removeFile = async (pathToFile, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      if (!IS_RELATIVE_PATH(pathToFile)) {
-        pathToFile = currentPath.split('\\')[1] ?
-          `${currentPath}\\${pathToFile}` :
-          `${currentPath}${pathToFile}`;
-      }
+      pathToFile = RELATIVE_PATH_NORMALIZATION(pathToFile, currentPath);
 
       await stat(pathToFile);
       const removeFilePromise = new Promise((resolve, _) => {
