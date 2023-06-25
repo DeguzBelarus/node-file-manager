@@ -8,6 +8,15 @@ export const RN_COMMAND = 'rn';
 export const CP_COMMAND = 'cp';
 export const MV_COMMAND = 'mv';
 export const RM_COMMAND = 'rm';
+export const OS_COMMAND = 'os';
+export const EOL_PARAM = 'EOL';
+export const CPUS_PARAM = 'cpus';
+export const HOMEDIR_PARAM = 'homedir';
+export const USERNAME_PARAM = 'username';
+export const ARCHITECTURE_PARAM = 'architecture';
+export const HASH_COMMAND = 'hash';
+export const COMPRESS_COMMAND = 'compress';
+export const DECOMPRESS_COMMAND = 'decompress';
 
 export const READLINE_CONFIG = {
   input: process.stdin,
