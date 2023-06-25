@@ -23,17 +23,18 @@ export const readFileContent = async (pathToFile, currentPath) => {
       await stat(pathToFile);
       const readableStream = new ReadStream(pathToFile);
       const readPromise = new Promise((resolve, reject) => {
+        const fileName = pathToFile.split('\\')[pathToFile.split('\\').length - 1];
+
         readableStream.on('data', (data) => {
           resolve(`${data.toString().trim()}`);
           readableStream.destroy();
         });
         readableStream.on('error', (_) => {
-          console.log('here');
           readableStream.destroy();
           reject();
         });
         readableStream.on('end', () => {
-          console.log(`The file ${pathToFile.split('\\')[pathToFile.split('\\').length - 1]} is empty`);
+          console.log(`The file ${fileName} is empty`);
           resolve();
         })
       });
@@ -57,12 +58,14 @@ export const createFile = async (pathToFile, currentPath) => {
       pathToFile = relativePathNormalization(pathToFile, currentPath);
 
       const createFilePromise = new Promise((resolve, reject) => {
+        const fileName = pathToFile.split('\\')[pathToFile.split('\\').length - 1];
+
         writeFile(pathToFile, '', (error) => {
           if (error) {
             console.error(error);
             reject();
           }
-          console.log(`The file ${pathToFile.split('\\')[pathToFile.split('\\').length - 1]} was successfully created`);
+          console.log(`The file ${fileName} was successfully created`);
           resolve();
         });
       });
@@ -89,12 +92,14 @@ export const renameFile = async (pathToFile, newFileName, currentPath) => {
         .join('\\');
 
       const renameFilePromise = new Promise((resolve, reject) => {
+        const fileName = pathToFile.split('\\')[pathToFile.split('\\').length - 1];
+
         rename(pathToFile, newFilePath, (error) => {
           if (error) {
             console.error(error);
             reject();
           }
-          console.log(`The file ${pathToFile.split('\\')[pathToFile.split('\\').length - 1]} was successfully renamed to ${newFileName}`);
+          console.log(`The file ${fileName} was successfully renamed to ${newFileName}`);
           resolve();
         });
       });

@@ -26,6 +26,10 @@ import {
   calculateHash
 } from './hashFunctions.js';
 import {
+  compressFile,
+  decompressFile
+} from './zlibFunctions.js'
+import {
   CD_COMMAND,
   EXIT_COMMAND,
   READLINE_CONFIG,
@@ -41,7 +45,9 @@ import {
   RM_COMMAND,
   OS_COMMAND,
   ALL_COMMAND_PARAMS,
-  HASH_COMMAND
+  HASH_COMMAND,
+  COMPRESS_COMMAND,
+  DECOMPRESS_COMMAND
 } from './constants.js';
 
 console.log(`Welcome to the File Manager, ${process.argv.slice(2)[0].split('=')[1]}!`);
@@ -94,6 +100,12 @@ async function openReadLine() {
       break;
     case `${HASH_COMMAND} ${FIRST_COMMAND_PARAM(command)}`:
       await calculateHash(FIRST_COMMAND_PARAM(command), currentPath);
+      break;
+    case `${COMPRESS_COMMAND} ${FIRST_COMMAND_PARAM(command)} ${SECOND_COMMAND_PARAM(command)}`:
+      await compressFile(FIRST_COMMAND_PARAM(command), SECOND_COMMAND_PARAM(command), currentPath);
+      break;
+    case `${DECOMPRESS_COMMAND} ${FIRST_COMMAND_PARAM(command)} ${SECOND_COMMAND_PARAM(command)}`:
+      await decompressFile(FIRST_COMMAND_PARAM(command), SECOND_COMMAND_PARAM(command), currentPath);
       break;
     default:
       console.log('Invalid input');
