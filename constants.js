@@ -25,13 +25,4 @@ export const READLINE_CONFIG = {
 
 export const FIRST_COMMAND_PARAM = (string) => string.split(' ')[1];
 export const SECOND_COMMAND_PARAM = (string) => string.split(' ')[2];
-
-export const IS_RELATIVE_PATH = (path) => path.split('\\')[0].includes(':') ? true : false;
-export const RELATIVE_PATH_NORMALIZATION = (pathToFile, currentPath) => {
-  if (!IS_RELATIVE_PATH(pathToFile)) {
-    pathToFile = currentPath.split('\\')[1] ?
-      `${currentPath}\\${pathToFile}` :
-      `${currentPath}${pathToFile}`;
-  }
-  return pathToFile;
-}
+export const ALL_COMMAND_PARAMS = (string) => string.split(' ').slice(1);

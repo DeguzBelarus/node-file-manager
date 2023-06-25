@@ -23,6 +23,9 @@ import {
   osInfo
 } from "./osFunctions.js";
 import {
+  calculateHash
+} from './hashFunctions.js';
+import {
   CD_COMMAND,
   EXIT_COMMAND,
   READLINE_CONFIG,
@@ -36,7 +39,9 @@ import {
   CP_COMMAND,
   MV_COMMAND,
   RM_COMMAND,
-  OS_COMMAND
+  OS_COMMAND,
+  ALL_COMMAND_PARAMS,
+  HASH_COMMAND
 } from './constants.js';
 
 console.log(`Welcome to the File Manager, ${process.argv.slice(2)[0].split('=')[1]}!`);
@@ -84,8 +89,11 @@ async function openReadLine() {
     case `${RM_COMMAND} ${FIRST_COMMAND_PARAM(command)}`:
       await removeFile(FIRST_COMMAND_PARAM(command), currentPath);
       break;
-    case `${OS_COMMAND} ${FIRST_COMMAND_PARAM(command)}`:
-      osInfo(FIRST_COMMAND_PARAM(command));
+    case `${OS_COMMAND} ${ALL_COMMAND_PARAMS(command).join(' ')}`:
+      osInfo(ALL_COMMAND_PARAMS(command));
+      break;
+    case `${HASH_COMMAND} ${FIRST_COMMAND_PARAM(command)}`:
+      await calculateHash(FIRST_COMMAND_PARAM(command), currentPath);
       break;
     default:
       console.log('Invalid input');

@@ -7,8 +7,8 @@ import {
 } from 'path';
 
 import {
-  IS_RELATIVE_PATH
-} from "./constants.js";
+  isRelativePath
+} from "./utils.js";
 
 export const showCurrentPath = (currentPath) => {
   console.log(`You are currently in ${currentPath}`);
@@ -42,7 +42,7 @@ export const changeDirectory = async (newPath, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      if (!IS_RELATIVE_PATH(newPath)) {
+      if (!isRelativePath(newPath)) {
         newPath = join(currentPath, newPath);
       } else {
         if (newPath.split('\\').length === 1) {

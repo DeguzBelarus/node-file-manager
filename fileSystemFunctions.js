@@ -10,15 +10,15 @@ import {
 } from 'fs/promises';
 
 import {
-  RELATIVE_PATH_NORMALIZATION
-} from "./constants.js";
+  relativePathNormalization
+} from "./utils.js";
 
 export const readFileContent = async (pathToFile, currentPath) => {
   if (!pathToFile || !currentPath) {
     console.error('Operation failed');
   } else {
     try {
-      pathToFile = RELATIVE_PATH_NORMALIZATION(pathToFile, currentPath);
+      pathToFile = relativePathNormalization(pathToFile, currentPath);
 
       await stat(pathToFile);
       const readableStream = new ReadStream(pathToFile);
@@ -54,7 +54,7 @@ export const createFile = async (pathToFile, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      pathToFile = RELATIVE_PATH_NORMALIZATION(pathToFile, currentPath);
+      pathToFile = relativePathNormalization(pathToFile, currentPath);
 
       const createFilePromise = new Promise((resolve, reject) => {
         writeFile(pathToFile, '', (error) => {
@@ -79,7 +79,7 @@ export const renameFile = async (pathToFile, newFileName, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      pathToFile = RELATIVE_PATH_NORMALIZATION(pathToFile, currentPath);
+      pathToFile = relativePathNormalization(pathToFile, currentPath);
 
       await stat(pathToFile);
       const newFilePath = pathToFile
@@ -111,8 +111,8 @@ export const copyFile = async (pathToFile, newPath, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      pathToFile = RELATIVE_PATH_NORMALIZATION(pathToFile, currentPath);
-      newPath = RELATIVE_PATH_NORMALIZATION(newPath, currentPath);
+      pathToFile = relativePathNormalization(pathToFile, currentPath);
+      newPath = relativePathNormalization(newPath, currentPath);
 
       await stat(pathToFile);
       await stat(newPath);
@@ -148,8 +148,8 @@ export const moveFile = async (pathToFile, newPath, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      pathToFile = RELATIVE_PATH_NORMALIZATION(pathToFile, currentPath);
-      newPath = RELATIVE_PATH_NORMALIZATION(newPath, currentPath);
+      pathToFile = relativePathNormalization(pathToFile, currentPath);
+      newPath = relativePathNormalization(newPath, currentPath);
 
       await stat(pathToFile);
       await stat(newPath);
@@ -186,7 +186,7 @@ export const removeFile = async (pathToFile, currentPath) => {
     console.error('Operation failed');
   } else {
     try {
-      pathToFile = RELATIVE_PATH_NORMALIZATION(pathToFile, currentPath);
+      pathToFile = relativePathNormalization(pathToFile, currentPath);
 
       await stat(pathToFile);
       const removeFilePromise = new Promise((resolve, _) => {
