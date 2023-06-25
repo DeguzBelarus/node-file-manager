@@ -34,14 +34,13 @@ export const compressFile = async (pathToFile, destinationPath, currentPath) => 
               console.error(error);
             } else {
               const compressFilePromise = new Promise((resolve, reject) => {
-
                 const readableStream = new ReadStream(pathToFile);
                 const writeableStream = new WriteStream(`${destinationPath}\\${fileName}.br`);
                 const brotli = createBrotliCompress();
 
                 const stream = readableStream.pipe(brotli).pipe(writeableStream);
                 stream.on('finish', () => {
-                  console.log(`The file ${fileName} was successfully compressed`);
+                  console.log(`\nThe file ${fileName} was successfully compressed`);
                   stream.destroy();
                   resolve();
                 });
@@ -57,8 +56,6 @@ export const compressFile = async (pathToFile, destinationPath, currentPath) => 
           })
         } else {
           const compressFilePromise = new Promise((resolve, reject) => {
-            const fileName = pathToFile.split('\\')[pathToFile.split('\\').length - 1];
-
             const readableStream = new ReadStream(pathToFile);
             const writeableStream = new WriteStream(`${destinationPath}\\${fileName}.br`);
             const brotli = createBrotliCompress();
@@ -66,7 +63,7 @@ export const compressFile = async (pathToFile, destinationPath, currentPath) => 
             const stream = readableStream.pipe(brotli).pipe(writeableStream);
             stream.on('finish', () => {
               stream.destroy();
-              console.log(`The file ${fileName} was successfully compressed`);
+              console.log(`\nThe file ${fileName} was successfully compressed`);
               resolve();
             });
             stream.on('error', (error) => {
@@ -110,7 +107,7 @@ export const decompressFile = async (pathToFile, destinationPath, currentPath) =
 
                 const stream = readableStream.pipe(brotli).pipe(writeableStream);
                 stream.on('finish', () => {
-                  console.log(`The file ${fileName} was successfully decompressed`);
+                  console.log(`\nThe file ${fileName} was successfully decompressed`);
                   stream.destroy();
                   resolve();
                 });
@@ -133,7 +130,7 @@ export const decompressFile = async (pathToFile, destinationPath, currentPath) =
             const stream = readableStream.pipe(brotli).pipe(writeableStream);
             stream.on('finish', () => {
               stream.destroy();
-              console.log(`The file ${fileName} was successfully decompressed`);
+              console.log(`\nThe file ${fileName} was successfully decompressed`);
               resolve();
             });
             stream.on('error', (error) => {
