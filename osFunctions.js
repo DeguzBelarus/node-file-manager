@@ -26,7 +26,7 @@ export const osInfo = (params) => {
     return console.log('Invalid input');
   }
 
-  params = params
+  params = Array.from(new Set(params))
     .map((param) => String(param).slice(2))
     .forEach((param) => {
       switch (param) {
