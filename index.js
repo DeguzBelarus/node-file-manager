@@ -15,7 +15,8 @@ import {
   readFileContent,
   createFile,
   renameFile,
-  copyFile
+  copyFile,
+  moveFile
 } from './fileSystemFunctions.js';
 import {
   CD_COMMAND,
@@ -28,7 +29,9 @@ import {
   FIRST_COMMAND_PARAM,
   SECOND_COMMAND_PARAM,
   RN_COMMAND,
-  CP_COMMAND
+  CP_COMMAND,
+  MV_COMMAND,
+  RM_COMMAND
 } from './constants.js';
 
 console.log(`Welcome to the File Manager, ${process.argv.slice(2)[0].split('=')[1]}!`);
@@ -69,6 +72,9 @@ async function openReadLine() {
       break;
     case `${CP_COMMAND} ${FIRST_COMMAND_PARAM(command)} ${SECOND_COMMAND_PARAM(command)}`:
       await copyFile(FIRST_COMMAND_PARAM(command), SECOND_COMMAND_PARAM(command), currentPath);
+      break;
+    case `${MV_COMMAND} ${FIRST_COMMAND_PARAM(command)} ${SECOND_COMMAND_PARAM(command)}`:
+      await moveFile(FIRST_COMMAND_PARAM(command), SECOND_COMMAND_PARAM(command), currentPath);
       break;
     default:
       console.log('Invalid input');

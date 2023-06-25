@@ -7,6 +7,7 @@ export const ADD_COMMAND = 'add';
 export const RN_COMMAND = 'rn';
 export const CP_COMMAND = 'cp';
 export const MV_COMMAND = 'mv';
+export const RM_COMMAND = 'rm';
 
 export const READLINE_CONFIG = {
   input: process.stdin,
